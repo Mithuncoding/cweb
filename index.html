@@ -2304,6 +2304,64 @@ document.getElementById('github-link').addEventListener('click', function(e) {
     e.preventDefault();
     alert('GitHub profile is currently private. Please contact me for access to my repositories.');
 });
+
+// Add to your existing JavaScript
+// Mobile optimizations
+function mobileOptimizations() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+        // Reduce particle count for better performance on mobile
+        const particlesCount = 800; // Reduced from 2000
+        
+        // Disable some intensive animations on mobile
+        document.querySelectorAll('.floating-element').forEach(el => {
+            el.style.display = 'none';
+        });
+        
+        // Use passive event listeners for better scrolling
+        document.addEventListener('touchstart', function() {}, {passive: true});
+        document.addEventListener('touchmove', function() {}, {passive: true});
+        
+        // Add touch feedback to buttons
+        const buttons = document.querySelectorAll('.btn, .project-links a, .form-btn, .back-to-top');
+        buttons.forEach(button => {
+            button.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.97)';
+            });
+            button.addEventListener('touchend', function() {
+                this.style.removeProperty('transform');
+            });
+        });
+    }
+}
+
+// Call the function after the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // ... existing code ...
+    mobileOptimizations();
+});
+
+// Optimize Three.js for mobile
+function optimizeThreeJS() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+        // Lower rendering quality on mobile
+        renderer.setPixelRatio(1);
+        
+        // Reduce particle size for mobile
+        particlesMaterial.size = 0.01;
+    }
+}
+
+// Handle orientation changes for mobile
+window.addEventListener('orientationchange', function() {
+    // Force recalculation of layouts
+    setTimeout(function() {
+        window.dispatchEvent(new Event('resize'));
+    }, 200);
+});
 </script>
 </body>
 </html>
