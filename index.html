@@ -1417,8 +1417,9 @@
 <div class="main-container">
     <!-- Header -->
     <header>
-        <a href="#" class="logo"><span>Mithun</span> R.</a>
-        <nav class="nav-links">
+        <a href="#" class="logo"><span>Mithun</span>R.</a>
+        
+        <div class="nav-links">
             <a href="#home">Home</a>
             <a href="#about">About</a>
             <a href="#projects">Projects</a>
@@ -1426,7 +1427,8 @@
             <a href="#education">Education</a>
             <a href="#skills">Skills</a>
             <a href="#contact">Contact</a>
-        </nav>
+        </div>
+        
         <div class="mobile-menu-btn">
             <div class="hamburger"></div>
         </div>
@@ -2372,49 +2374,47 @@ window.addEventListener('orientationchange', function() {
 
 // Fix mobile menu behavior
 document.addEventListener('DOMContentLoaded', function() {
+    // Fix mobile menu
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const mobileNav = document.querySelector('.mobile-nav');
     
     if (mobileMenuBtn && mobileNav) {
-        // Make sure the mobile menu is initially closed
+        // Force initial state
         mobileNav.style.right = '-100%';
         
-        mobileMenuBtn.addEventListener('click', function() {
+        mobileMenuBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
             this.classList.toggle('active');
             
-            if (mobileNav.classList.contains('active')) {
-                mobileNav.classList.remove('active');
+            if (this.classList.contains('active')) {
+                mobileNav.style.right = '0';
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            } else {
                 mobileNav.style.right = '-100%';
                 document.body.style.overflow = '';
-            } else {
-                mobileNav.classList.add('active');
-                mobileNav.style.right = '0';
-                document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
             }
         });
         
-        // Close menu when clicking a link
+        // Close menu when clicking on a link
         document.querySelectorAll('.mobile-nav a').forEach(link => {
-            link.addEventListener('click', () => {
+            link.addEventListener('click', function() {
                 mobileMenuBtn.classList.remove('active');
-                mobileNav.classList.remove('active');
                 mobileNav.style.right = '-100%';
                 document.body.style.overflow = '';
             });
         });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (mobileMenuBtn.classList.contains('active') && 
+                !mobileNav.contains(e.target) && 
+                e.target !== mobileMenuBtn) {
+                mobileMenuBtn.classList.remove('active');
+                mobileNav.style.right = '-100%';
+                document.body.style.overflow = '';
+            }
+        });
     }
-    
-    // Close the menu when the user clicks outside
-    document.addEventListener('click', function(e) {
-        if (mobileNav && mobileNav.classList.contains('active') && 
-            !mobileNav.contains(e.target) && 
-            !mobileMenuBtn.contains(e.target)) {
-            mobileMenuBtn.classList.remove('active');
-            mobileNav.classList.remove('active');
-            mobileNav.style.right = '-100%';
-            document.body.style.overflow = '';
-        }
-    });
 });
 </script>
 </body>
