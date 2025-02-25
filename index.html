@@ -2416,6 +2416,203 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// COMPLETE MOBILE MENU REBUILD
+document.addEventListener('DOMContentLoaded', function() {
+    // First, let's detect if we're on mobile
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+      // Step 1: Remove any existing mobile nav completely
+      const existingMobileNav = document.querySelector('.mobile-nav');
+      if (existingMobileNav) {
+        existingMobileNav.parentNode.removeChild(existingMobileNav);
+      }
+      
+      // Step 2: Create a new mobile nav from scratch
+      const newMobileNav = document.createElement('div');
+      newMobileNav.className = 'new-mobile-nav';
+      newMobileNav.style.cssText = `
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(10, 10, 10, 0.95);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: right 0.3s ease;
+      `;
+      
+      // Step 3: Get all navigation links
+      const navLinks = document.querySelectorAll('.nav-links a');
+      
+      // Step 4: Create new nav links for the mobile menu
+      navLinks.forEach(link => {
+        const newLink = document.createElement('a');
+        newLink.href = link.href;
+        newLink.textContent = link.textContent;
+        newLink.style.cssText = `
+          color: #f8fafc;
+          text-decoration: none;
+          font-size: 1.5rem;
+          margin: 15px 0;
+          padding: 10px;
+        `;
+        newMobileNav.appendChild(newLink);
+      });
+      
+      // Step 5: Add to body
+      document.body.appendChild(newMobileNav);
+      
+      // Step 6: Create hamburger button if it doesn't exist
+      let menuBtn = document.querySelector('.mobile-menu-btn');
+      
+      if (!menuBtn) {
+        menuBtn = document.createElement('div');
+        menuBtn.className = 'new-mobile-menu-btn';
+        menuBtn.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          width: 40px;
+          height: 40px;
+          cursor: pointer;
+          z-index: 10000;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        `;
+        
+        const hamburger = document.createElement('div');
+        hamburger.style.cssText = `
+          width: 30px;
+          height: 3px;
+          background-color: #f8fafc;
+          position: relative;
+          transition: all 0.3s ease;
+        `;
+        
+        hamburger.innerHTML = `
+          <style>
+            .new-mobile-menu-btn .hamburger:before, 
+            .new-mobile-menu-btn .hamburger:after {
+              content: '';
+              position: absolute;
+              width: 30px;
+              height: 3px;
+              background-color: #f8fafc;
+              transition: all 0.3s ease;
+            }
+            
+            .new-mobile-menu-btn .hamburger:before {
+              transform: translateY(-10px);
+            }
+            
+            .new-mobile-menu-btn .hamburger:after {
+              transform: translateY(10px);
+            }
+            
+            .new-mobile-menu-btn.active .hamburger {
+              background-color: transparent;
+            }
+            
+            .new-mobile-menu-btn.active .hamburger:before {
+              transform: rotate(45deg) translate(0px, 0px);
+            }
+            
+            .new-mobile-menu-btn.active .hamburger:after {
+              transform: rotate(-45deg) translate(0px, 0px);
+            }
+          </style>
+        `;
+        
+        menuBtn.appendChild(hamburger);
+        hamburger.className = 'hamburger';
+        document.body.appendChild(menuBtn);
+      }
+      
+      // Step 7: Set up click events
+      menuBtn.addEventListener('click', function() {
+        this.classList.toggle('active');
+        
+        if (this.classList.contains('active')) {
+          newMobileNav.style.right = '0';
+          document.body.style.overflow = 'hidden';
+        } else {
+          newMobileNav.style.right = '-100%';
+          document.body.style.overflow = '';
+        }
+      });
+      
+      // Step 8: Close menu when clicking a link
+      newMobileNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', function() {
+          menuBtn.classList.remove('active');
+          newMobileNav.style.right = '-100%';
+          document.body.style.overflow = '';
+        });
+      });
+    }
+    
+    // Step 9: Fix any layout issues
+    const mainContent = document.querySelector('.main-container');
+    if (mainContent) {
+      mainContent.style.width = '100%';
+      mainContent.style.maxWidth = '100%';
+    }
+    
+    // Force all sections to be full width
+    document.querySelectorAll('section').forEach(section => {
+      section.style.width = '100%';
+      section.style.maxWidth = '100%';
+    });
+    
+    // Add global style overrides
+    const style = document.createElement('style');
+    style.textContent = `
+      @media (max-width: 768px) {
+        body * {
+          max-width: 100% !important;
+          box-sizing: border-box !important;
+        }
+        
+        .main-container, section, div {
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+        
+        /* Force hide any existing always-visible mobile nav */
+        .mobile-nav {
+          display: none !important;
+          width: 0 !important;
+          right: -100% !important;
+          visibility: hidden !important;
+        }
+        
+        /* Force any right-side nav to be hidden */
+        [class*="nav"], [id*="nav"] {
+          position: fixed !important;
+          right: -100% !important;
+          display: none !important;
+        }
+        
+        /* Only our new nav should be visible when active */
+        .new-mobile-nav {
+          display: flex !important;
+        }
+        
+        .new-mobile-nav.active {
+          right: 0 !important;
+          display: flex !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  });
 </script>
 </body>
 </html>
