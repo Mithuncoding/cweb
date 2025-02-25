@@ -2357,10 +2357,17 @@ function optimizeThreeJS() {
 
 // Handle orientation changes for mobile
 window.addEventListener('orientationchange', function() {
-    // Force recalculation of layouts
+    // Hide overflow during orientation change to prevent visual glitches
+    document.body.style.overflow = 'hidden';
+    
+    // Force recalculation after orientation change completes
     setTimeout(function() {
+        document.body.style.overflow = '';
         window.dispatchEvent(new Event('resize'));
-    }, 200);
+        
+        // Re-run optimizations
+        mobileOptimizations();
+    }, 500);
 });
 </script>
 </body>
