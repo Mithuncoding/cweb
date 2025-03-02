@@ -16,7 +16,7 @@
             font-family: 'Poppins', sans-serif;
             scroll-behavior: smooth;
         }
-
+        
         :root {
             --primary: #0a0a0a;
             --secondary: #2563eb;
@@ -1071,7 +1071,102 @@
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(37, 99, 235, 0.5);
         }
+        /* Responsive styles for mobile */
+@media (max-width: 768px) {
+    header {
+        padding: 10px 5%;
+    }
 
+    .nav-links {
+        display: none;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .mobile-nav {
+        right: -100%; /* Initially hidden */
+    }
+
+    .mobile-nav.active {
+        right: 0; /* Shown when active */
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .projects-container {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+
+    .contact-container {
+        flex-direction: column;
+    }
+
+    .contact-form {
+        margin-top: 20px;
+    }
+}
+
+/* Responsive styles for very small screens */
+@media (max-width: 480px) {
+    .logo {
+        font-size: 1.5rem;
+    }
+
+    .nav-links a {
+        font-size: 0.9rem;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .hero p {
+        font-size: 0.9rem;
+    }
+
+    .hero-buttons .btn {
+        padding: 10px 20px;
+        font-size: 0.8rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .about-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .projects-container {
+        grid-template-columns: 1fr;
+    }
+
+    .timeline-content {
+        width: 80%;
+    }
+
+    .education-card {
+        max-width: 100%;
+    }
+
+    .contact-form {
+        padding: 20px;
+    }
+}
         /* Animations */
         @keyframes float {
             0% {
