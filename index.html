@@ -4065,6 +4065,675 @@ window.addEventListener('load', function() {
     });
 });
 </script>
+
+<!-- Enhanced Password Protection System -->
+<div id="password-protection" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; justify-content: center; align-items: center; overflow: hidden;">
+    <!-- Dynamic 3D background container -->
+    <div id="lock-background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden;"></div>
+    
+    <!-- Advanced 3D Scene -->
+    <canvas id="lock-scene-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
+    
+    <!-- Floating elements -->
+    <div id="floating-elements" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></div>
+    
+    <!-- Auth container with glass morphism -->
+    <div id="auth-container" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 24px; padding: 40px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); max-width: 450px; width: 90%; text-align: center; position: relative; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.18); transform-style: preserve-3d; perspective: 1000px; opacity: 0; transform: translateY(20px) scale(0.95); transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1); z-index: 2;">
+        <div id="auth-inner" style="transform-style: preserve-3d;">
+            <!-- Shield Icon with 3D effect -->
+            <div id="lock-icon-container" style="margin: 0 auto 20px; position: relative; width: 100px; height: 100px; transform-style: preserve-3d; perspective: 800px;">
+                <div id="lock-icon" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 50px; transform-style: preserve-3d; transition: transform 0.8s ease;">🔒</div>
+            </div>
+            
+            <h2 id="auth-title" style="margin: 0 0 10px; color: #fff; font-size: 28px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.3); transform: translateZ(20px); letter-spacing: 0.5px;">RESTRICTED ACCESS</h2>
+            
+            <div id="auth-subtitle" style="color: rgba(255,255,255,0.9); margin-bottom: 25px; font-size: 16px; font-weight: 400; line-height: 1.5; text-shadow: 0 1px 2px rgba(0,0,0,0.2); transform: translateZ(10px);"></div>
+            
+            <div id="password-field" style="position: relative; margin-bottom: 25px; transform: translateZ(20px);">
+                <input type="password" id="password-input" placeholder="Authorization Code" style="width: 100%; padding: 15px 20px; border: 2px solid rgba(255,255,255,0.2); border-radius: 12px; background: rgba(255,255,255,0.1); color: #fff; font-size: 16px; outline: none; transition: all 0.3s ease; backdrop-filter: blur(5px); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <div id="hint-label" style="position: absolute; left: 10px; top: -10px; background: rgba(0,0,0,0.7); color: rgba(255,255,255,0.8); font-size: 12px; padding: 2px 8px; border-radius: 10px; opacity: 0; transition: opacity 0.3s ease;">Hint: 5678</div>
+            </div>
+            
+            <button id="unlock-button" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 15px 30px; border-radius: 12px; font-size: 16px; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(5px); margin-bottom: 15px; transform: translateZ(20px); position: relative; overflow: hidden;">
+                <span style="position: relative; z-index: 2;">AUTHENTICATE</span>
+                <div class="button-glow" style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%); transform: scale(0); opacity: 0; transition: transform 0.5s ease, opacity 0.5s ease;"></div>
+            </button>
+            
+            <div id="error-message" style="color: #ff4757; margin-top: 15px; font-size: 14px; height: 20px; transform: translateZ(10px); text-shadow: 0 0 5px rgba(255,0,0,0.3);"></div>
+            
+            <div id="attempt-counter" style="position: absolute; bottom: 15px; right: 15px; color: rgba(255,255,255,0.5); font-size: 12px; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">Attempts: 0</div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Enhanced Password Protection System
+(function() {
+    // Check if already unlocked - using sessionStorage instead of localStorage
+    if (sessionStorage.getItem('siteUnlocked') === 'true') {
+        document.getElementById('password-protection').style.display = 'none';
+        return;
+    }
+    
+    const correctPassword = "5678";
+    const passwordInput = document.getElementById('password-input');
+    const unlockButton = document.getElementById('unlock-button');
+    const errorMessage = document.getElementById('error-message');
+    const protectionScreen = document.getElementById('password-protection');
+    const authContainer = document.getElementById('auth-container');
+    const lockBackground = document.getElementById('lock-background');
+    const floatingElements = document.getElementById('floating-elements');
+    const lockIcon = document.getElementById('lock-icon');
+    const lockIconContainer = document.getElementById('lock-icon-container');
+    const authSubtitle = document.getElementById('auth-subtitle');
+    const hintLabel = document.getElementById('hint-label');
+    const attemptCounter = document.getElementById('attempt-counter');
+    const canvas = document.getElementById('lock-scene-canvas');
+    
+    let attempts = 0;
+    
+    // Set canvas to full window size
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
+    // Cryptic messages
+    const crypticMessages = [
+        "Mithun has secured this project from unauthorized viewers.",
+        "Access denied: Direct authorization from Mithun required.",
+        "Security breach detected. Identity verification needed.",
+        "Content protected by advanced neural network security.", 
+        "Unauthorized access attempts will be traced and logged.",
+        "This security system has blocked suspicious activities.",
+        "Project protected: Contact Mithun for access credentials.",
+        "Biometric authentication bypass: Enter override code.",
+        "Security protocol Alpha-5: Awaiting authorization."
+    ];
+    
+    // Create WebGL context for advanced 3D background
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    
+    // Check if WebGL is supported
+    if (!gl) {
+        console.warn('WebGL not supported, falling back to canvas rendering');
+        createFallbackBackground();
+    } else {
+        initWebGLBackground();
+    }
+    
+    // WebGL background setup
+    function initWebGLBackground() {
+        // Vertex shader program
+        const vsSource = `
+            attribute vec4 aVertexPosition;
+            attribute vec2 aTextureCoord;
+            
+            uniform mat4 uModelViewMatrix;
+            uniform mat4 uProjectionMatrix;
+            
+            varying highp vec2 vTextureCoord;
+            
+            void main(void) {
+                gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+                vTextureCoord = aTextureCoord;
+            }
+        `;
+        
+        // Fragment shader program
+        const fsSource = `
+            precision highp float;
+            
+            varying highp vec2 vTextureCoord;
+            
+            uniform float uTime;
+            uniform vec2 uResolution;
+            
+            // Function to create a plasma effect
+            float plasma(vec2 position, float time) {
+                float v1 = sin(position.x * 10.0 + time);
+                float v2 = sin(position.y * 10.0 + time);
+                float v3 = sin(position.x * 10.0 + position.y * 10.0 + time);
+                
+                return (v1 + v2 + v3) / 3.0;
+            }
+            
+            void main(void) {
+                vec2 position = vTextureCoord;
+                position.y = 1.0 - position.y;
+                position = position * 2.0 - 1.0;
+                
+                float aspect = uResolution.x / uResolution.y;
+                position.x *= aspect;
+                
+                // Create distance from center
+                float distance = length(position);
+                
+                // Create time-based rotation for coordinates
+                float angle = uTime * 0.1;
+                float s = sin(angle);
+                float c = cos(angle);
+                vec2 rotatedPos = vec2(
+                    position.x * c - position.y * s,
+                    position.x * s + position.y * c
+                );
+                
+                // Create plasma effect
+                float plasma1 = plasma(rotatedPos * 0.5, uTime * 0.3);
+                float plasma2 = plasma(rotatedPos * 0.8, -uTime * 0.4);
+                
+                // Mix colors based on plasma values
+                vec3 color1 = vec3(0.1, 0.3, 0.9);  // Deep blue
+                vec3 color2 = vec3(0.9, 0.1, 0.5);  // Magenta
+                vec3 color3 = vec3(0.0, 0.8, 0.8);  // Cyan
+                
+                vec3 finalColor = mix(color1, color2, plasma1);
+                finalColor = mix(finalColor, color3, plasma2);
+                
+                // Add center glow
+                float glow = smoothstep(1.0, 0.0, distance * 1.5) * 0.6;
+                finalColor += glow * vec3(0.8, 0.8, 1.0);
+                
+                // Add vignette effect
+                float vignette = smoothstep(1.4, 0.0, distance);
+                finalColor *= vignette;
+                
+                // Add noise
+                float noise = fract(sin(dot(position + uTime * 0.01, vec2(12.9898, 78.233))) * 43758.5453);
+                finalColor += noise * 0.03;
+                
+                gl_FragColor = vec4(finalColor, 1.0);
+            }
+        `;
+        
+        // Initialize a shader program
+        const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
+        
+        // Get the attribute and uniform locations
+        const programInfo = {
+            program: shaderProgram,
+            attribLocations: {
+                vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
+                textureCoord: gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
+            },
+            uniformLocations: {
+                projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
+                modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
+                time: gl.getUniformLocation(shaderProgram, 'uTime'),
+                resolution: gl.getUniformLocation(shaderProgram, 'uResolution'),
+            },
+        };
+        
+        // Create buffers for the quad
+        const buffers = initBuffers(gl);
+        
+        // Draw scene
+        let startTime = Date.now();
+        function render() {
+            const currentTime = (Date.now() - startTime) / 1000;  // time in seconds
+            
+            // Clear the canvas
+            gl.clearColor(0.0, 0.0, 0.0, 1.0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            
+            // Set up the shader program
+            gl.useProgram(programInfo.program);
+            
+            // Set the shader uniforms
+            const projectionMatrix = mat4.create();
+            const modelViewMatrix = mat4.create();
+            
+            mat4.ortho(projectionMatrix, -1, 1, -1, 1, -1, 1);
+            
+            gl.uniformMatrix4fv(
+                programInfo.uniformLocations.projectionMatrix,
+                false,
+                projectionMatrix
+            );
+            gl.uniformMatrix4fv(
+                programInfo.uniformLocations.modelViewMatrix,
+                false,
+                modelViewMatrix
+            );
+            
+            gl.uniform1f(programInfo.uniformLocations.time, currentTime);
+            gl.uniform2f(programInfo.uniformLocations.resolution, canvas.width, canvas.height);
+            
+            // Bind the buffer for the vertex positions
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
+            gl.vertexAttribPointer(
+                programInfo.attribLocations.vertexPosition,
+                2, // Each position has 2 components (x, y)
+                gl.FLOAT,
+                false,
+                0,
+                0
+            );
+            gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+            
+            // Bind the buffer for the texture coordinates
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffers.textureCoord);
+            gl.vertexAttribPointer(
+                programInfo.attribLocations.textureCoord,
+                2, // Each texture coordinate has 2 components (s, t)
+                gl.FLOAT,
+                false,
+                0,
+                0
+            );
+            gl.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
+            
+            // Draw the quad
+            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+            
+            // Continue animation
+            if (!sessionStorage.getItem('siteUnlocked')) {
+                requestAnimationFrame(render);
+            }
+        }
+        
+        // Start the animation
+        requestAnimationFrame(render);
+    }
+    
+    // Initialize buffers for WebGL rendering
+    function initBuffers(gl) {
+        // Create a position buffer for a full-screen quad
+        const positionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        const positions = [
+            -1.0,  1.0,
+             1.0,  1.0,
+            -1.0, -1.0,
+             1.0, -1.0,
+        ];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+        
+        // Create a texture coordinate buffer
+        const textureCoordBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
+        const textureCoordinates = [
+            0.0, 0.0,
+            1.0, 0.0,
+            0.0, 1.0,
+            1.0, 1.0,
+        ];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordinates), gl.STATIC_DRAW);
+        
+        return {
+            position: positionBuffer,
+            textureCoord: textureCoordBuffer,
+        };
+    }
+    
+    // Initialize a shader program
+    function initShaderProgram(gl, vsSource, fsSource) {
+        const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
+        const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+        
+        // Create the shader program
+        const shaderProgram = gl.createProgram();
+        gl.attachShader(shaderProgram, vertexShader);
+        gl.attachShader(shaderProgram, fragmentShader);
+        gl.linkProgram(shaderProgram);
+        
+        // Check if shader program creation was successful
+        if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+            console.error('Unable to initialize the shader program: ' + gl.getProgramInfoLog(shaderProgram));
+            return null;
+        }
+        
+        return shaderProgram;
+    }
+    
+    // Create and compile a shader
+    function loadShader(gl, type, source) {
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        
+        // Check if compilation was successful
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            console.error('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(shader));
+            gl.deleteShader(shader);
+            return null;
+        }
+        
+        return shader;
+    }
+    
+    // Fallback background for browsers without WebGL
+    function createFallbackBackground() {
+        // Create a dynamic background with CSS
+        lockBackground.style.background = 'linear-gradient(135deg, #0a0047 0%, #220047 25%, #3a0047 50%, #4a0047 75%, #900048 100%)';
+        lockBackground.style.backgroundSize = '400% 400%';
+        lockBackground.style.animation = 'gradientAnimation 15s ease infinite';
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes gradientAnimation {
+                0% { background-position: 0% 50% }
+                50% { background-position: 100% 50% }
+                100% { background-position: 0% 50% }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Add pulsing circles
+        for (let i = 0; i < 5; i++) {
+            const circle = document.createElement('div');
+            circle.style.cssText = `
+                position: absolute;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+                transform: translate(-50%, -50%);
+                pointer-events: none;
+            `;
+            
+            // Random position
+            const posX = Math.random() * 100;
+            const posY = Math.random() * 100;
+            
+            // Random size
+            const size = 100 + Math.random() * 300;
+            
+            // Animation
+            const duration = 5 + Math.random() * 10;
+            
+            circle.style.left = `${posX}%`;
+            circle.style.top = `${posY}%`;
+            circle.style.width = `${size}px`;
+            circle.style.height = `${size}px`;
+            circle.style.animation = `pulse ${duration}s ease-in-out infinite`;
+            
+            lockBackground.appendChild(circle);
+        }
+    }
+    
+    // Math library for WebGL transformations
+    const mat4 = {
+        create: function() {
+            return new Float32Array([
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1
+            ]);
+        },
+        ortho: function(out, left, right, bottom, top, near, far) {
+            const lr = 1 / (left - right);
+            const bt = 1 / (bottom - top);
+            const nf = 1 / (near - far);
+            
+            out[0] = -2 * lr;
+            out[1] = 0;
+            out[2] = 0;
+            out[3] = 0;
+            out[4] = 0;
+            out[5] = -2 * bt;
+            out[6] = 0;
+            out[7] = 0;
+            out[8] = 0;
+            out[9] = 0;
+            out[10] = 2 * nf;
+            out[11] = 0;
+            out[12] = (left + right) * lr;
+            out[13] = (top + bottom) * bt;
+            out[14] = (far + near) * nf;
+            out[15] = 1;
+            
+            return out;
+        }
+    };
+    
+    // Create floating particles
+    function createFloatingElements() {
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'floating-element';
+            
+            // Size between 2px and 6px
+            const size = 2 + Math.random() * 4;
+            
+            // Position randomly
+            const posX = Math.random() * 100;
+            const posY = Math.random() * 100;
+            
+            // Animation
+            const animDuration = 3 + Math.random() * 10;
+            const animDelay = Math.random() * 5;
+            
+            // Glow color based on position
+            const hue = (posX + posY) % 360;
+            
+            particle.style.cssText = `
+                width: ${size}px;
+                height: ${size}px;
+                left: ${posX}%;
+                top: ${posY}%;
+                animation: float ${animDuration}s ease-in-out infinite;
+                animation-delay: -${animDelay}s;
+                background: hsl(${hue}, 100%, 70%);
+                box-shadow: 0 0 10px hsl(${hue}, 100%, 70%), 0 0 20px hsl(${hue}, 100%, 50%);
+            `;
+            
+            floatingElements.appendChild(particle);
+        }
+    }
+    
+    // Add 3D effect to container on mouse move
+    function add3DEffect() {
+        protectionScreen.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            authContainer.style.transform = `translateY(0) scale(1) rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
+        });
+        
+        protectionScreen.addEventListener('mouseleave', () => {
+            authContainer.style.transform = 'translateY(0) scale(1) rotateY(0deg) rotateX(0deg)';
+        });
+    }
+    
+    // Set a random cryptic message
+    function setRandomCrypticMessage() {
+        const randomMessage = crypticMessages[Math.floor(Math.random() * crypticMessages.length)];
+        authSubtitle.textContent = randomMessage;
+        authSubtitle.style.animation = 'glow 3s ease-in-out infinite';
+    }
+    
+    // Add dynamic styles for animations
+    const dynamicStyle = document.createElement('style');
+    dynamicStyle.textContent = `
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.3; }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0) translateZ(10px); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px) translateZ(10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px) translateZ(10px); }
+        }
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 5px rgba(255,255,255,0.4); }
+            50% { text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.4); }
+        }
+        #lock-icon {
+            text-shadow: 0 0 20px rgba(255,255,255,0.8);
+        }
+        #password-input:focus {
+            border-color: rgba(255,255,255,0.6);
+            box-shadow: 0 0 15px rgba(255,255,255,0.4);
+        }
+        #unlock-button:hover {
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 0 20px rgba(255,255,255,0.4);
+        }
+    `;
+    document.head.appendChild(dynamicStyle);
+    
+    // Add shake animation to elements when wrong password
+    function shakeEffect(element) {
+        element.style.animation = 'shake 0.5s ease';
+        setTimeout(() => {
+            element.style.animation = '';
+        }, 500);
+    }
+    
+    // Function to check password
+    function checkPassword() {
+        attempts++;
+        attemptCounter.textContent = `Attempts: ${attempts}`;
+        
+        if (passwordInput.value === correctPassword) {
+            // Success animation
+            errorMessage.textContent = '';
+            unlockButton.disabled = true;
+            passwordInput.disabled = true;
+            
+            // Glow effect on container
+            authContainer.style.boxShadow = `0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(255,255,255,0.5)`;
+            
+            // Success animation for lock icon
+            lockIcon.textContent = '🔓';
+            lockIcon.style.animation = 'pulse 0.5s ease 3';
+            
+            // Create success particles
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'floating-element';
+                    
+                    // Random color
+                    const hue = Math.random() * 360;
+                    
+                    particle.style.cssText = `
+                        width: ${2 + Math.random() * 6}px;
+                        height: ${2 + Math.random() * 6}px;
+                        left: 50%;
+                        top: 50%;
+                        background: hsl(${hue}, 100%, 70%);
+                        box-shadow: 0 0 10px hsl(${hue}, 100%, 70%), 0 0 20px hsl(${hue}, 100%, 50%);
+                        animation: none;
+                        transform: translate(-50%, -50%);
+                        opacity: 0.8;
+                        z-index: 3;
+                    `;
+                    
+                    // Random direction and speed
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = 5 + Math.random() * 20;
+                    const finalX = Math.cos(angle) * speed * 15;
+                    const finalY = Math.sin(angle) * speed * 15;
+                    
+                    floatingElements.appendChild(particle);
+                    
+                    // Animate particle outward
+                    particle.animate([
+                        { transform: 'translate(-50%, -50%)', opacity: 0.8 },
+                        { transform: `translate(calc(-50% + ${finalX}px), calc(-50% + ${finalY}px))`, opacity: 0 }
+                    ], {
+                        duration: 1500 + Math.random() * 1000,
+                        easing: 'cubic-bezier(0.1, 0.7, 1.0, 0.1)'
+                    });
+                    
+                    // Remove particle after animation
+                    setTimeout(() => particle.remove(), 2500);
+                }, i * 10);
+            }
+            
+            // Save to sessionStorage and hide after animation
+            setTimeout(() => {
+                sessionStorage.setItem('siteUnlocked', 'true');
+                
+                authContainer.style.transform = 'translateY(-20px) scale(0.95) rotateX(10deg)';
+                authContainer.style.opacity = '0';
+                
+                // Fade out all elements
+                canvas.style.transition = 'opacity 1.5s ease';
+                canvas.style.opacity = '0';
+                
+                // Fade out floating elements
+                const floatingElements = document.querySelectorAll('.floating-element');
+                floatingElements.forEach(elem => {
+                    elem.style.transition = 'opacity 1s ease';
+                    elem.style.opacity = '0';
+                });
+                
+                setTimeout(() => {
+                    protectionScreen.style.display = 'none';
+                }, 1500);
+            }, 1500);
+        } else {
+            // Error feedback
+            errorMessage.textContent = 'Invalid authorization code. Security alert triggered.';
+            shakeEffect(passwordInput);
+            shakeEffect(lockIconContainer);
+            
+            // Show hint after 3 failed attempts
+            if (attempts >= 3) {
+                hintLabel.style.opacity = '1';
+            }
+            
+            // Red flash on wrong attempt
+            authContainer.style.boxShadow = '0 0 30px rgba(255, 0, 0, 0.8)';
+            setTimeout(() => {
+                authContainer.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.3)';
+            }, 300);
+        }
+    }
+    
+    // Init animations
+    function initAnimations() {
+        setTimeout(() => {
+            authContainer.style.opacity = '1';
+            authContainer.style.transform = 'translateY(0) scale(1)';
+            
+            // Animate lock icon
+            lockIconContainer.style.animation = 'float 6s ease-in-out infinite';
+        }, 500);
+    }
+    
+    // Button glow effect
+    unlockButton.addEventListener('mouseenter', function() {
+        const glow = this.querySelector('.button-glow');
+        glow.style.transform = 'scale(1)';
+        glow.style.opacity = '1';
+    });
+    
+    unlockButton.addEventListener('mouseleave', function() {
+        const glow = this.querySelector('.button-glow');
+        glow.style.transform = 'scale(0)';
+        glow.style.opacity = '0';
+    });
+    
+    // Add event listeners
+    unlockButton.addEventListener('click', checkPassword);
+    passwordInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            checkPassword();
+        }
+    });
+    
+    // Initialize all effects
+    createFloatingElements();
+    add3DEffect();
+    setRandomCrypticMessage();
+    initAnimations();
+    
+    // Focus input after delay to allow animations to complete
+    setTimeout(() => {
+        passwordInput.focus();
+    }, 1000);
+})();
+</script>
 </body>
 </html>
         
