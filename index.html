@@ -2166,6 +2166,7 @@
             font-size: 1rem;
             transition: all 0.3s ease;
             text-decoration: none;
+            border: none;
             box-shadow: 0 10px 20px rgba(6, 182, 212, 0.3);
             position: relative;
             overflow: hidden;
@@ -2274,8 +2275,9 @@
             padding: 30px;
             transition: transform 0.3s, box-shadow 0.3s;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            position: relative;
-            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
         
         .education-card::before {
@@ -2790,7 +2792,6 @@
         /* Education Section */
         .education {
             padding: 100px 0;
-            background: var(--primary);
             position: relative;
             overflow: hidden;
         }
@@ -3109,9 +3110,35 @@
                 max-width: 200px;
             }
         }
-    </style>
+    
+@keyframes edu-bg-move {
+    0% { background-position: 0 0, 0 0, 0 0; }
+    100% { background-position: 120px 200px, -100px 80px, 0 0; }
+}
+.edu-neon-title {
+    color: #fff;
+    text-shadow:
+        0 0 8px #0fffc3,
+        0 0 18px #3a8dde,
+        0 0 42px #0fffc355;
+    font-family: 'Orbitron', 'Segoe UI', Arial, sans-serif;
+    font-size: 2.6rem;
+    font-weight: 900;
+    letter-spacing: 0.03em;
+    position: relative;
+    z-index: 2;
+    animation: edu-neon-flicker 2.2s infinite alternate;
+}
+@keyframes edu-neon-flicker {
+    0% { text-shadow: 0 0 8px #0fffc3, 0 0 18px #3a8dde, 0 0 42px #0fffc355; }
+    48% { text-shadow: 0 0 12px #0fffc3, 0 0 24px #3a8dde, 0 0 56px #0fffc355; }
+    50% { text-shadow: 0 0 24px #0fffc3, 0 0 36px #3a8dde, 0 0 80px #0fffc355; }
+    52% { text-shadow: 0 0 12px #0fffc3, 0 0 24px #3a8dde, 0 0 56px #0fffc355; }
+    100% { text-shadow: 0 0 8px #0fffc3, 0 0 18px #3a8dde, 0 0 42px #0fffc355; }
+}
+</style>
 </head>
-<body>
+<body class="dark-theme">
 <!-- Preloader -->
 <div class="loader">
     <div class="loader-content">
@@ -3321,6 +3348,21 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Project 8 - Co-Drawing using AI -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="images/draw.png" alt="Co-Drawing using AI">
+                    <div class="project-overlay"></div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Co-Drawing using AI</h3>
+                    <p class="project-description">Collaborative drawing: Human sketches, AI completes and colors, adding creative enhancements. Experience real-time AI-human co-creation.</p>
+                    <div class="project-links">
+                        <a href="http://co-drawing-omega.vercel.app" target="_blank"><i class="fas fa-globe"></i> Live Demo</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -3346,60 +3388,46 @@
     </section>
 
     <!-- Education Section -->
-    <section id="education" class="education">
+    <section id="education" class="education-section impressive-education">
         <h2 class="section-title">Education</h2>
-        
-        <div class="education-container">
+        <div class="experience-timeline">
+            <div class="timeline-line"></div>
             <!-- Bachelor's Degree -->
-            <div class="education-card">
-                <div class="education-year">2022 - 2026</div>
-                <h3>Bachelor of Technology in Information Science</h3>
-                <div class="education-location">
-                    <i class="fas fa-university"></i>
-                    <span>Nagarjuna College of Engineering and Technology, Devanahalli, Bengaluru, India</span>
+            <div class="timeline-item">
+                <div class="timeline-point"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2022 - 2026</div>
+                    <h3 class="timeline-title">Bachelor of Technology in Information Science</h3>
+                    <h4 class="timeline-subtitle">Nagarjuna College of Engineering and Technology, Bengaluru</h4>
+                    <p class="timeline-description">
+                        Current<br>
+                        Expected Graduation: December 2026<br>
+                        CGPA: 8.85 (across 5 semesters)
+                    </p>
                 </div>
-                <div class="education-meta">
-                    <div class="education-meta-item">
-                        <i class="fas fa-graduation-cap"></i>
-                        <span>Expected Graduation: December 2026</span>
-                    </div>
-                    <div class="education-meta-item">
-                        <i class="fas fa-chart-line"></i>
-                        <span>CGPA: 8.85 (across 5 semesters)</span>
-                    </div>
-                </div>
-                <div class="education-card-badge">Current</div>
             </div>
-            
             <!-- Pre-University -->
-            <div class="education-card">
-                <div class="education-year">2020 - 2022</div>
-                <h3>Pre-University Course (PUC)</h3>
-                <div class="education-location">
-                    <i class="fas fa-university"></i>
-                    <span>New Baldwin PU College, Mandur, Budigere</span>
-                </div>
-                <div class="education-meta">
-                    <div class="education-meta-item">
-                        <i class="fas fa-book"></i>
-                        <span>Science Stream with Computer Science</span>
-                    </div>
+            <div class="timeline-item">
+                <div class="timeline-point"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2020 - 2022</div>
+                    <h3 class="timeline-title">Pre-University Course (PUC)</h3>
+                    <h4 class="timeline-subtitle">New Baldwin PU College, Mandur, Budigere</h4>
+                    <p class="timeline-description">
+                        Science Stream with Computer Science
+                    </p>
                 </div>
             </div>
-            
             <!-- Schooling -->
-            <div class="education-card">
-                <div class="education-year">2016 - 2020</div>
-                <h3>Schooling (7th - 10th Grade)</h3>
-                <div class="education-location">
-                    <i class="fas fa-school"></i>
-                    <span>New Baldwin International School, Mandur, Budigere</span>
-                </div>
-                <div class="education-meta">
-                    <div class="education-meta-item">
-                        <i class="fas fa-award"></i>
-                        <span>CBSE Curriculum</span>
-                    </div>
+            <div class="timeline-item">
+                <div class="timeline-point"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2016 - 2020</div>
+                    <h3 class="timeline-title">Schooling (7th - 10th Grade)</h3>
+                    <h4 class="timeline-subtitle">New Baldwin International School, Mandur, Budigere</h4>
+                    <p class="timeline-description">
+                        CBSE Curriculum
+                    </p>
                 </div>
             </div>
         </div>
@@ -3408,66 +3436,60 @@
     <!-- Academic & Extracurricular Highlights Section -->
     <section id="highlights" class="highlights-section">
         <h2 class="section-title">Academic & Extracurricular Highlights</h2>
-        
         <div class="highlights-container">
             <div class="highlights-grid">
-                <div class="highlight-card">
-                    <div class="highlight-icon">
-                        <i class="fas fa-medal"></i>
-                    </div>
-                    <div class="highlight-content">
-                        <h4>Top 20 Performer</h4>
+                <!-- Highlight Card 1 -->
+                <div class="highlight-minimal-card">
+                    <div class="highlight-minimal-icon"><i class="fas fa-trophy"></i></div>
+                    <div class="highlight-minimal-content">
+                        <h4>Top 20 Performer <span style="font-size:0.9em; color:#38bdf8;">(2024)</span></h4>
+                        <div style="font-weight:600; color:#5df3a8; margin-bottom:4px;">Sridevi Engineering College</div>
                         <p>For academic/technical excellence at Sridevi Engineering College</p>
                     </div>
                 </div>
-                
-                <div class="highlight-card">
-                    <div class="highlight-icon">
-                        <i class="fas fa-bullseye"></i>
-                    </div>
-                    <div class="highlight-content">
-                        <h4>Top 10 Position</h4>
-                        <p>In CSS Battles at NIT Surathkal, showcasing strong front-end coding skills</p>
-                    </div>
-                </div>
-                
-                <div class="highlight-card">
-                    <div class="highlight-icon">
-                        <i class="fas fa-trophy"></i>
-                    </div>
-                    <div class="highlight-content">
-                        <h4>Won 2 Hackathons</h4>
-                        <p>In the 4th semester - Hackathon Winner at Sai Vidya Engineering College and Ideathon Winner at Nagarjuna College</p>
+                <!-- Highlight Card 2 -->
+                <div class="highlight-minimal-card">
+                    <div class="highlight-minimal-icon"><i class="fas fa-code"></i></div>
+                    <div class="highlight-minimal-content">
+                        <h4>Top 10 Position <span style="font-size:0.9em; color:#38bdf8;">(2023)</span></h4>
+                        <div style="font-weight:600; color:#5df3a8; margin-bottom:4px;">CSS Battles, NIT Surathkal</div>
+                        <p>Showcased strong front-end coding skills in CSS Battles at NIT Surathkal</p>
                     </div>
                 </div>
-                
-                <div class="highlight-card">
-                    <div class="highlight-icon">
-                        <i class="fas fa-award"></i>
+                <!-- Highlight Card 3 -->
+                <div class="highlight-minimal-card">
+                    <div class="highlight-minimal-icon"><i class="fas fa-lightbulb"></i></div>
+                    <div class="highlight-minimal-content">
+                        <h4>Won 2 Hackathons <span style="font-size:0.9em; color:#38bdf8;">(2023)</span></h4>
+                        <div style="font-weight:600; color:#5df3a8; margin-bottom:4px;">Sai Vidya Engineering College & Nagarjuna College</div>
+                        <p>Hackathon Winner at Sai Vidya Engineering College and Ideathon Winner at Nagarjuna College (4th semester)</p>
                     </div>
-                    <div class="highlight-content">
-                        <h4>1st Place</h4>
+                </div>
+                <!-- Highlight Card 4 -->
+                <div class="highlight-minimal-card">
+                    <div class="highlight-minimal-icon"><i class="fas fa-medal"></i></div>
+                    <div class="highlight-minimal-content">
+                        <h4>1st Place <span style="font-size:0.9em; color:#38bdf8;">(2023)</span></h4>
+                        <div style="font-weight:600; color:#5df3a8; margin-bottom:4px;">Sai Vidya Institute</div>
                         <p>In a coding competition at Sai Vidya Institute</p>
                     </div>
                 </div>
-                
-                <div class="highlight-card">
-                    <div class="highlight-icon">
-                        <i class="fas fa-medal"></i>
-                    </div>
-                    <div class="highlight-content">
-                        <h4>3rd Place</h4>
+                <!-- Highlight Card 5 -->
+                <div class="highlight-minimal-card">
+                    <div class="highlight-minimal-icon"><i class="fas fa-award"></i></div>
+                    <div class="highlight-minimal-content">
+                        <h4>3rd Place <span style="font-size:0.9em; color:#38bdf8;">(2023)</span></h4>
+                        <div style="font-weight:600; color:#5df3a8; margin-bottom:4px;">Nagarjuna College</div>
                         <p>In an Ideathon at Nagarjuna College</p>
                     </div>
                 </div>
-                
-                <div class="highlight-card">
-                    <div class="highlight-icon">
-                        <i class="fas fa-certificate"></i>
-                    </div>
-                    <div class="highlight-content">
-                        <h4>Certified</h4>
-                        <p>In 5+ courses from Coursera, Udemy, and GeeksForGeeks</p>
+                <!-- Highlight Card 6 -->
+                <div class="highlight-minimal-card">
+                    <div class="highlight-minimal-icon"><i class="fas fa-certificate"></i></div>
+                    <div class="highlight-minimal-content">
+                        <h4>Certified <span style="font-size:0.9em; color:#38bdf8;">(2022-2024)</span></h4>
+                        <div style="font-weight:600; color:#5df3a8; margin-bottom:4px;">Coursera, Udemy, GeeksForGeeks</div>
+                        <p>Completed 5+ courses from Coursera, Udemy, and GeeksForGeeks</p>
                     </div>
                 </div>
             </div>
@@ -3740,39 +3762,421 @@
 
     <!-- Resume Download Section -->
     <section id="resume" class="resume-section">
-        <h2 class="section-title">Professional Resume</h2>
-        <div class="resume-container">
-            <div class="resume-content">
-                <div class="resume-left">
-                    <div class="resume-preview">
-                        <div class="preview-page">
-                            <div class="preview-header"></div>
-                            <div class="preview-content">
-                                <div class="preview-line"></div>
-                                <div class="preview-line"></div>
-                                <div class="preview-line"></div>
-                                <div class="preview-line"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="resume-right">
-                    <p class="resume-description">Download my comprehensive resume detailing my technical skills, projects, education, and professional experience.</p>
-                    <ul class="resume-highlights">
-                        <li><i class="fas fa-check-circle"></i> Technical Skills & Proficiencies</li>
-                        <li><i class="fas fa-check-circle"></i> Project Portfolio & Experience</li>
-                        <li><i class="fas fa-check-circle"></i> Education & Certifications</li>
-                        <li><i class="fas fa-check-circle"></i> Professional Achievements</li>
-                    </ul>
-                    <div class="resume-actions">
-                        <a href="MITHUN RESUME.pdf" class="download-btn" download>
-                            <i class="fas fa-file-download"></i>
-                            <span>Download Resume</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
+      <h2 class="section-title">Professional Resume</h2>
+      <div class="resume-minimal-card">
+        <div class="resume-minimal-pdf-icon">
+          <i class="fas fa-file-pdf"></i>
         </div>
+        <div class="resume-minimal-name">Mithun R</div>
+        <div class="resume-minimal-summary">Download my latest resume (PDF) for a quick overview of my skills and experience.</div>
+        <a href="MITHUN RESUME.pdf" class="resume-minimal-download" download>
+          <i class="fas fa-download"></i> Download Resume
+        </a>
+      </div>
+    </section>
+
+    <style>
+      /* --- Resume Section: Minimal Card --- */
+      .resume-section {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        position: relative;
+        z-index: 2;
+      }
+      .resume-minimal-card {
+        position: relative;
+        width: 370px;
+        padding: 36px 30px 28px 30px;
+        border-radius: 18px;
+        background: rgba(17, 24, 39, 0.55);
+        border: 1.5px solid rgba(56, 189, 248, 0.18);
+        box-shadow: 0 2px 14px 0 rgba(0,0,0,0.16);
+        margin: 30px auto 0 auto;
+        z-index: 10;
+      }
+      .resume-minimal-pdf-icon {
+        font-size: 2.2rem;
+        color: #38bdf8;
+        margin-bottom: 12px;
+        filter: drop-shadow(0 0 4px #38bdf844);
+        z-index: 2;
+      }
+      .resume-minimal-name {
+        font-size: 1.25rem;
+        font-family: 'Orbitron', 'Montserrat', 'Segoe UI', Arial, sans-serif;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: 0.08em;
+        margin-bottom: 6px;
+        z-index: 2;
+        text-shadow: 0 1px 8px #06b6d488, 0 1px 2px #0009;
+      }
+      .resume-minimal-summary {
+        font-size: 1.01rem;
+        color: #e0e7ef;
+        text-align: center;
+        margin-bottom: 18px;
+        z-index: 2;
+        text-shadow: 0 1px 6px #38bdf822;
+      }
+      .resume-minimal-download {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7em;
+        padding: 0.7em 1.8em;
+        font-size: 1.03rem;
+        font-weight: 700;
+        color: #38bdf8;
+        border: 1.5px solid #38bdf8;
+        border-radius: 1.4em;
+        background: none;
+        cursor: pointer;
+        text-decoration: none;
+        transition: border 0.18s, color 0.18s, background 0.18s, transform 0.18s;
+        font-family: 'Orbitron', 'Montserrat', 'Segoe UI', Arial, sans-serif;
+        letter-spacing: 0.03em;
+      }
+      .resume-minimal-download i {
+        font-size: 1.1em;
+        color: #38bdf8;
+        margin-right: 4px;
+        filter: drop-shadow(0 0 2px #38bdf844);
+      }
+      .resume-minimal-download:hover {
+        color: #fff;
+        background: #38bdf8;
+        border-color: #38bdf8;
+        transform: scale(1.04);
+      }
+      .resume-minimal-download:hover i {
+        color: #fff;
+      }
+      @media (max-width: 600px) {
+        .resume-minimal-card {
+          width: 97vw;
+          padding: 18px 4vw 14px 4vw;
+        }
+        .resume-minimal-name {
+          font-size: 1rem;
+        }
+        .resume-minimal-pdf-icon {
+          font-size: 1.4rem;
+        }
+      }
+
+      .resume-animated-card {
+        position: relative;
+        width: 380px;
+        padding: 48px 36px 36px 36px;
+        border-radius: 28px;
+        background: rgba(30, 41, 59, 0.55);
+        box-shadow: 0 0 32px 8px #06b6d4cc, 0 1.5px 10px 0 #000b;
+        border: 2.5px solid rgba(6, 182, 212, 0.55);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(18px) saturate(180%);
+        -webkit-backdrop-filter: blur(18px) saturate(180%);
+        margin: 40px auto 0 auto;
+        z-index: 10;
+        animation: resumeCardFloat 4s ease-in-out infinite alternate;
+      }
+      .resume-animated-glow {
+        position: absolute;
+        top: -5px; left: -5px; right: -5px; bottom: -5px;
+        border-radius: 32px;
+        pointer-events: none;
+        z-index: 0;
+        background: linear-gradient(120deg, #06b6d4, #a21caf, #f59e42, #06b6d4);
+        background-size: 400% 400%;
+        filter: blur(18px) brightness(1.3);
+        opacity: 0.9;
+        animation: borderGlowSweep 8s linear infinite;
+      }
+      @keyframes borderGlowSweep {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      @keyframes resumeCardFloat {
+        0% { transform: translateY(0px) scale(1); }
+        100% { transform: translateY(-16px) scale(1.03); }
+      }
+      .resume-animated-pdf-icon {
+        font-size: 4.5rem;
+        color: #f43f5e;
+        margin-bottom: 18px;
+        filter: drop-shadow(0 0 16px #f43f5ecc) drop-shadow(0 0 6px #fff7);
+        animation: pdfIconBounceRotate 2.5s cubic-bezier(0.68, -0.6, 0.32, 1.6) infinite;
+        background: linear-gradient(120deg, #e53e3e 60%, #fff 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      @keyframes pdfIconBounceRotate {
+        0%, 100% { transform: scale(1) rotate(-12deg); }
+        20% { transform: scale(1.18) rotate(8deg); }
+        40% { transform: scale(0.98) rotate(-6deg); }
+        60% { transform: scale(1.08) rotate(6deg); }
+        80% { transform: scale(0.95) rotate(-8deg); }
+      }
+      .resume-animated-name {
+        font-size: 2.2rem;
+        font-weight: 900;
+        color: #fff;
+        letter-spacing: 0.06em;
+        text-shadow: 0 2px 18px #06b6d4cc, 0 1px 2px #000b;
+        margin-bottom: 8px;
+        font-family: 'Orbitron', 'Montserrat', 'Segoe UI', Arial, sans-serif;
+        z-index: 2;
+      }
+      .resume-animated-summary {
+        font-size: 1.13rem;
+        color: #e0e7ef;
+        text-align: center;
+        margin-bottom: 28px;
+        text-shadow: 0 1px 10px #06b6d488;
+        z-index: 2;
+      }
+      .resume-animated-download {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7em;
+        padding: 1em 2.6em;
+        font-size: 1.18rem;
+        font-weight: 800;
+        color: #fff;
+        border: none;
+        border-radius: 1.7em;
+        background: none;
+        cursor: pointer;
+        overflow: hidden;
+        z-index: 2;
+        transition: transform 0.18s cubic-bezier(0.23,1,0.32,1);
+        box-shadow: 0 0 0 0 #06b6d4;
+        text-shadow: 0 1px 10px #a21caf77;
+        font-family: 'Orbitron', 'Montserrat', 'Segoe UI', Arial, sans-serif;
+        letter-spacing: 0.03em;
+      }
+      .resume-animated-download-bg {
+        content: '';
+        position: absolute;
+        left: 0; top: 0; right: 0; bottom: 0;
+        background: linear-gradient(90deg, #06b6d4, #a21caf, #f59e42, #06b6d4);
+        background-size: 400% 400%;
+        filter: blur(10px) brightness(1.4);
+        opacity: 0.85;
+        z-index: 1;
+        transition: opacity 0.2s;
+        animation: buttonSweep 5s linear infinite;
+      }
+      @keyframes buttonSweep {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      .resume-animated-download:hover {
+        transform: scale(1.09) translateY(-2px);
+        box-shadow: 0 0 22px 6px #06b6d4cc, 0 0 12px 4px #a21caf88;
+      }
+      .resume-animated-download:hover .resume-animated-download-bg {
+        opacity: 1;
+        filter: blur(13px) brightness(1.55);
+      }
+      .resume-animated-download i {
+        z-index: 2;
+        font-size: 1.3em;
+      }
+      /* Glassmorphism border compatibility fix */
+      .resume-vibe-card, .resume-vibe-download, .resume-minimal-card, .resume-minimal-download, .highlight-minimal-card, .resume-animated-card, .resume-animated-download, .resume-glass-card, .resume-glass-download {
+        background-clip: padding-box;
+        -webkit-background-clip: padding-box;
+      }
+      /* Responsive tweaks */
+      @media (max-width: 600px) {
+        .resume-vibe-card {
+          width: 97vw;
+          padding: 22px 6vw 20px 6vw;
+        }
+        .resume-vibe-name {
+          font-size: 1.3rem;
+        }
+        .resume-vibe-pdf-icon {
+          font-size: 2.5rem;
+        }
+      }
+      /* END media query - ensure no stray closing brace */
+      .resume-glass-card {
+        position: relative;
+        max-width: 420px;
+        margin: 40px auto;
+        padding: 48px 36px 36px 36px;
+        border-radius: 28px;
+        background: rgba(30, 41, 59, 0.5);
+        box-shadow: 0 12px 48px 0 rgba(37,99,235,0.16), 0 1.5px 16px 0 rgba(6,182,212,0.20);
+        border: 2.5px solid rgba(6,182,212,0.28);
+        backdrop-filter: blur(16px) saturate(160%);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 3;
+        animation: glassCardFloat 4s ease-in-out infinite alternate;
+        transition: box-shadow 0.3s, border 0.3s;
+      }
+      .resume-glass-card:hover {
+        box-shadow: 0 20px 64px 0 rgba(37,99,235,0.28), 0 2.5px 24px 0 rgba(6,182,212,0.32);
+        border: 2.5px solid rgba(37,99,235,0.5);
+      }
+      .resume-glass-glow {
+        position: absolute;
+        inset: -12px;
+        border-radius: 32px;
+        background: conic-gradient(from 0deg, #2563eb 0%, #06b6d4 40%, #fff 60%, #2563eb 100%);
+        filter: blur(36px);
+        opacity: 0.7;
+        z-index: 1;
+        pointer-events: none;
+        animation: glassGlowSweep 8s linear infinite;
+      }
+      .resume-glass-pdf-icon {
+        font-size: 4.2rem;
+        color: #e53e3e;
+        margin-bottom: 18px;
+        z-index: 2;
+        filter: drop-shadow(0 0 16px #e53e3e88);
+        animation: glassPdfBounce 1.8s cubic-bezier(.68,-0.55,.27,1.55) infinite;
+        background: linear-gradient(120deg, #e53e3e 60%, #fff 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .resume-glass-name {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2rem;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 10px;
+        letter-spacing: 1.5px;
+        text-shadow: 0 0 8px #06b6d4cc;
+        z-index: 2;
+      }
+      .resume-glass-summary {
+        color: #d1d5db;
+        font-size: 1.1rem;
+        margin-bottom: 26px;
+        text-align: center;
+        z-index: 2;
+        text-shadow: 0 1px 8px #0008;
+      }
+      .resume-glass-download {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 36px;
+        background: none;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-decoration: none;
+        box-shadow: 0 8px 28px rgba(6,182,212,0.16);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        z-index: 2;
+        transition: transform 0.18s, box-shadow 0.18s, background 0.3s;
+        animation: glassBtnFadeIn 1.5s 0.5s backwards;
+        isolation: isolate;
+      }
+      .resume-glass-download i {
+        font-size: 1.3rem;
+        margin-right: 6px;
+        color: #06b6d4;
+        filter: drop-shadow(0 0 6px #06b6d4bb);
+      }
+      .resume-glass-download-bg {
+        content: '';
+        position: absolute;
+        left: 0; top: 0; right: 0; bottom: 0;
+        background: linear-gradient(120deg, #2563eb 0%, #06b6d4 60%, #fff 100%);
+        opacity: 0.15;
+        z-index: 1;
+        pointer-events: none;
+        transition: opacity 0.3s;
+      }
+      .resume-glass-download:hover .resume-glass-download-bg {
+        opacity: 0.32;
+      }
+      .resume-glass-download:hover {
+        background: linear-gradient(90deg, rgba(6,182,212,0.18) 0%, rgba(37,99,235,0.12) 100%);
+        transform: scale(1.08);
+        box-shadow: 0 16px 40px rgba(37,99,235,0.22);
+      }
+      @keyframes glassCardFloat {
+        0% { transform: translateY(0) scale(1); }
+        50% { transform: translateY(-16px) scale(1.01); }
+        100% { transform: translateY(0) scale(1); }
+      }
+      @keyframes glassGlowSweep {
+        0% { filter: blur(36px) brightness(1); }
+        100% { filter: blur(36px) brightness(1.2); }
+      }
+      @keyframes glassPdfBounce {
+        0%, 100% { transform: translateY(0) rotate(-7deg); }
+        30% { transform: translateY(-16px) rotate(10deg) scale(1.15); }
+        50% { transform: translateY(-10px) rotate(-8deg) scale(1.08); }
+        70% { transform: translateY(2px) rotate(0deg) scale(1.01); }
+      }
+      @keyframes glassBtnFadeIn {
+        0% { opacity: 0; transform: translateY(32px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+      @media (max-width: 600px) {
+        .resume-glass-card {
+          padding: 22px 6vw 20px 6vw;
+          max-width: 98vw;
+        }
+        .resume-glass-name {
+          font-size: 1.4rem;
+        }
+      }
+    
+@keyframes edu-bg-move {
+    0% { background-position: 0 0, 0 0, 0 0; }
+    100% { background-position: 120px 200px, -100px 80px, 0 0; }
+}
+.edu-neon-title {
+    color: #fff;
+    text-shadow:
+        0 0 8px #0fffc3,
+        0 0 18px #3a8dde,
+        0 0 42px #0fffc355;
+    font-family: 'Orbitron', 'Segoe UI', Arial, sans-serif;
+    font-size: 2.6rem;
+    font-weight: 900;
+    letter-spacing: 0.03em;
+    position: relative;
+    z-index: 2;
+    animation: edu-neon-flicker 2.2s infinite alternate;
+}
+@keyframes edu-neon-flicker {
+    0% { text-shadow: 0 0 8px #0fffc3, 0 0 18px #3a8dde, 0 0 42px #0fffc355; }
+    48% { text-shadow: 0 0 12px #0fffc3, 0 0 24px #3a8dde, 0 0 56px #0fffc355; }
+    50% { text-shadow: 0 0 24px #0fffc3, 0 0 36px #3a8dde, 0 0 80px #0fffc355; }
+    52% { text-shadow: 0 0 12px #0fffc3, 0 0 24px #3a8dde, 0 0 56px #0fffc355; }
+    100% { text-shadow: 0 0 8px #0fffc3, 0 0 18px #3a8dde, 0 0 42px #0fffc355; }
+}
+</style>
+
     </section>
 
     <!-- Footer -->
@@ -4474,7 +4878,33 @@ document.addEventListener('DOMContentLoaded', function() {
             .new-mobile-menu-btn.active .hamburger:after {
               transform: rotate(-45deg) translate(0px, 0px);
             }
-          </style>
+          
+@keyframes edu-bg-move {
+    0% { background-position: 0 0, 0 0, 0 0; }
+    100% { background-position: 120px 200px, -100px 80px, 0 0; }
+}
+.edu-neon-title {
+    color: #fff;
+    text-shadow:
+        0 0 8px #0fffc3,
+        0 0 18px #3a8dde,
+        0 0 42px #0fffc355;
+    font-family: 'Orbitron', 'Segoe UI', Arial, sans-serif;
+    font-size: 2.6rem;
+    font-weight: 900;
+    letter-spacing: 0.03em;
+    position: relative;
+    z-index: 2;
+    animation: edu-neon-flicker 2.2s infinite alternate;
+}
+@keyframes edu-neon-flicker {
+    0% { text-shadow: 0 0 8px #0fffc3, 0 0 18px #3a8dde, 0 0 42px #0fffc355; }
+    48% { text-shadow: 0 0 12px #0fffc3, 0 0 24px #3a8dde, 0 0 56px #0fffc355; }
+    50% { text-shadow: 0 0 24px #0fffc3, 0 0 36px #3a8dde, 0 0 80px #0fffc355; }
+    52% { text-shadow: 0 0 12px #0fffc3, 0 0 24px #3a8dde, 0 0 56px #0fffc355; }
+    100% { text-shadow: 0 0 8px #0fffc3, 0 0 18px #3a8dde, 0 0 42px #0fffc355; }
+}
+</style>
         `;
         
         menuBtn.appendChild(hamburger);
@@ -4860,97 +5290,7 @@ sessionStorage.setItem('siteUnlocked', 'true');
     gap: 50px;
 }
 
-.education-card {
-    position: relative;
-    background: rgba(15, 23, 42, 0.6);
-    border-radius: 16px;
-    overflow: hidden;
-    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(66, 153, 225, 0.3);
-}
-
-.education-card-inner {
-    padding: 30px;
-    position: relative;
-    z-index: 2;
-}
-
-.education-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: linear-gradient(to bottom, var(--accent), var(--secondary));
-    z-index: 1;
-}
-
-.education-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-}
-
-.education-card:hover .education-year {
-    color: var(--accent);
-    transform: translateY(-5px);
-}
-
-.education-year {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.1rem;
-    color: var(--secondary);
-    margin-bottom: 15px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
-    display: inline-block;
-    padding: 5px 15px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 20px;
-    position: relative;
-}
-
-.education-card h3 {
-    font-size: 1.7rem;
-    color: #fff;
-    margin-bottom: 15px;
-    font-weight: 700;
-    transition: all 0.3s ease;
-    position: relative;
-    display: inline-block;
-}
-
-.education-card h3::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(to right, var(--accent), transparent);
-    transition: width 0.4s ease;
-}
-
-.education-card:hover h3::after {
-    width: 100%;
-}
-
-.education-location {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #e2e8f0;
-    margin: 15px 0;
-    font-size: 1.1rem;
-}
-
-.education-location i {
-    color: var(--accent);
-    font-size: 1.2rem;
-}
+/* Legacy Education section CSS (education-card, education-year, etc.) fully removed for dark theme purity. */
 
 .education-meta {
     display: flex;
@@ -5001,7 +5341,7 @@ sessionStorage.setItem('siteUnlocked', 'true');
 
 /* Enhanced Highlights Section Styles */
 .highlights-section {
-    padding: 100px 20px;
+    padding: 100px 0;
     position: relative;
     background: linear-gradient(45deg, #0f172a, #1e293b);
     overflow: hidden;
@@ -5033,142 +5373,98 @@ sessionStorage.setItem('siteUnlocked', 'true');
     margin-top: 50px;
 }
 
-.highlight-card {
+.highlight-minimal-card {
     position: relative;
     height: 100%;
     transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
     perspective: 1000px;
 }
 
-.highlight-card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    padding: 30px;
-    background: rgba(30, 41, 59, 0.7);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-}
-
-.highlight-card:hover .highlight-card-inner {
-    transform: rotateY(10deg) translateZ(10px);
-    box-shadow: -15px 20px 40px rgba(0, 0, 0, 0.4);
-    border-color: rgba(6, 182, 212, 0.3);
-}
-
-.highlight-icon {
-    width: 60px;
-    height: 60px;
+.highlight-minimal-icon {
+    width: 2.2rem;
+    height: 2.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(45deg, rgba(6, 182, 212, 0.2), rgba(59, 130, 246, 0.2));
+    background: rgba(56, 189, 248, 0.08);
     border-radius: 50%;
-    margin-bottom: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
+    margin-bottom: 0;
+    margin-right: 18px;
+    flex-shrink: 0;
 }
 
-.highlight-card:hover .highlight-icon {
-    transform: scale(1.1);
-    background: linear-gradient(45deg, rgba(6, 182, 212, 0.4), rgba(59, 130, 246, 0.4));
-    box-shadow: 0 15px 35px rgba(6, 182, 212, 0.3);
-}
-
-.highlight-icon i {
-    font-size: 1.8rem;
-    color: var(--accent);
-    text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
-    transition: all 0.3s ease;
-}
-
-.highlight-card:hover .highlight-icon i {
-    transform: scale(1.2);
-    color: #fff;
-}
-
-.highlight-content {
+.highlight-minimal-card {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 18px;
+    background: rgba(17, 24, 39, 0.55);
+    border: 1.5px solid rgba(56, 189, 248, 0.18);
+    border-radius: 16px;
+    box-shadow: 0 2px 14px 0 rgba(0,0,0,0.12);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    cursor: pointer;
+    will-change: transform, box-shadow;
     position: relative;
-    z-index: 2;
+    z-index: 1;
 }
 
-.highlight-content h4 {
+.highlight-minimal-card:hover {
+    transform: scale(1.045) translateY(-4px);
+    box-shadow: 0 8px 32px 0 rgba(56, 189, 248, 0.16), 0 2px 14px 0 rgba(0,0,0,0.16);
+    border-color: #38bdf8;
+}
+
+.highlight-minimal-icon i {
+    font-size: 1.3rem;
+    color: #38bdf8;
+    filter: drop-shadow(0 0 2px #38bdf844);
+}
+
+.highlight-minimal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+    padding-left: 2px;
+}
+
+.highlight-minimal-content h4 {
     color: #fff;
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    font-weight: 600;
-    position: relative;
-    display: inline-block;
-}
-
-.highlight-content h4::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(to right, var(--accent), transparent);
-    transition: width 0.4s ease;
-}
-
-.highlight-card:hover .highlight-content h4::after {
+    font-size: 1.13rem;
+    font-family: 'Orbitron', 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+    text-shadow: 0 1px 8px #06b6d488, 0 1px 2px #0009;
+    text-align: left;
     width: 100%;
 }
 
-.highlight-content p {
-    color: #94a3b8;
-    line-height: 1.6;
+.highlight-minimal-content p {
+    color: #e0e7ef;
     font-size: 1rem;
+    text-align: left;
+    margin-bottom: 0;
+    text-shadow: 0 1px 6px #38bdf822;
+    width: 100%;
 }
 
-.highlight-card::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
-    background: linear-gradient(45deg, var(--accent), var(--secondary));
-    z-index: -1;
-    transform: scale(0.4);
-    opacity: 0;
-    border-radius: 16px;
-    transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-    filter: blur(20px);
-}
-
-.highlight-card:hover::before {
-    opacity: 0.2;
-    transform: scale(0.8);
-}
-
-@media (max-width: 768px) {
-    .education-card, .highlight-card {
-        transform: none !important;
-    }
-    
+@media (max-width: 600px) {
     .highlights-grid {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 18px;
     }
-    
-    .education-card h3 {
-        font-size: 1.4rem;
+    .highlight-minimal-card {
+        padding: 14px 4vw 12px 4vw;
     }
-    
-    .education-meta {
-        flex-direction: column;
-        gap: 10px;
+    .highlight-minimal-content h4 {
+        font-size: 1rem;
     }
-    
-    .highlight-content h4 {
-        font-size: 1.3rem;
+    .highlight-minimal-icon {
+        width: 1.3rem;
+        height: 1.3rem;
     }
 }
 
@@ -5178,6 +5474,204 @@ sessionStorage.setItem('siteUnlocked', 'true');
     background: transparent;
     position: relative;
 }
+
+/* Compact timeline for highlights section */
+.highlights-section .timeline-item {
+    margin-bottom: 30px !important;
+}
+
+/* Theme Variables for Education Section */
+:root {
+    --edu-bg: linear-gradient(120deg, #e0e7ff 0%, #f0fdfa 100%);
+    --edu-card-bg: rgba(255,255,255,0.35);
+    --edu-card-border: rgba(58,141,222,0.19);
+    --edu-title: #222b45;
+    --edu-subtitle: #3a8dde;
+    --edu-desc-bg: rgba(240,253,250,0.55);
+    --edu-desc: #222b45;
+    --edu-badge-bg: linear-gradient(90deg, #3a8dde 70%, #5df3a8 100%);
+    --edu-badge-color: #fff;
+    --edu-year-badge-bg: linear-gradient(90deg, #3a8dde 70%, #5df3a8 100%);
+    --edu-year-badge-color: #fff;
+    --edu-shadow: 0 8px 36px rgba(58,141,222,0.16), 0 1.5px 4px rgba(0,0,0,0.08);
+    --edu-shadow-hover: 0 14px 48px rgba(58,141,222,0.23), 0 2.5px 8px rgba(0,0,0,0.14);
+}
+
+.dark-theme .impressive-education::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: none;
+}
+@keyframes edu-starfield {
+    0% { background-position: 0 0, 0 0, 0 0; }
+    100% { background-position: 120px 200px, -100px 80px, 0 0; }
+}
+.dark-theme .education-cards-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 48px 36px;
+    justify-content: center;
+    padding: 40px 0 0 0;
+    position: relative;
+    z-index: 1;
+}
+.dark-theme .education-glass-card {
+    background: rgba(12,18,32,0.92);
+    border: 2.5px solid;
+    border-image: linear-gradient(120deg, #0fffc3 0%, #3a8dde 100%) 1;
+    border-radius: 26px;
+    box-shadow: 0 0 32px #0fffc355, 0 8px 40px #061a2b99;
+    position: relative;
+    padding: 44px 34px 32px 34px;
+    transition: box-shadow 0.3s, transform 0.3s, border 0.5s;
+    font-family: 'Orbitron', 'Segoe UI', 'Inter', Arial, sans-serif;
+    overflow: hidden;
+    min-height: 320px;
+}
+.dark-theme .education-glass-card:hover {
+    box-shadow: 0 0 48px #3a8ddecc, 0 16px 64px #0fffc388;
+    transform: translateY(-12px) scale(1.04) perspective(600px) rotateY(2deg);
+    border-image: linear-gradient(90deg, #3a8dde 0%, #0fffc3 100%) 1;
+}
+.dark-theme .education-year-badge {
+    position: absolute;
+    top: -22px;
+    left: 32px;
+    background: linear-gradient(90deg, #0fffc3 0%, #3a8dde 100%);
+    color: #fff;
+    font-size: 1.08em;
+    font-weight: 800;
+    padding: 9px 28px;
+    border-radius: 20px;
+    box-shadow: 0 0 18px #0fffc355, 0 2px 18px #3a8dde44;
+    letter-spacing: 0.04em;
+    z-index: 2;
+    border: 2px solid #0fffc3;
+    text-shadow: 0 2px 12px #3a8dde88;
+    animation: edu-badge-pulse 2.2s infinite alternate;
+}
+@keyframes edu-badge-pulse {
+    0% { box-shadow: 0 0 18px #0fffc355, 0 2px 18px #3a8dde44; }
+    100% { box-shadow: 0 0 36px #0fffc3aa, 0 4px 28px #3a8dde88; }
+}
+.dark-theme .education-title {
+    font-size: 1.38em;
+    font-weight: 900;
+    margin-top: 22px;
+    margin-bottom: 6px;
+    color: #ffffff;
+    letter-spacing: 0.01em;
+    text-shadow: 0 2px 12px #0fffc355;
+}
+.dark-theme .education-subtitle {
+    color: #0fffc3;
+    font-size: 1.13em;
+    margin-bottom: 18px;
+    font-weight: 700;
+    text-shadow: 0 2px 8px #3a8dde77;
+}
+.dark-theme .education-desc {
+    color: #eafcff;
+    font-size: 1.04em;
+    margin-top: 12px;
+    background: rgba(20,30,44,0.88);
+    border-radius: 15px;
+    padding: 13px 18px;
+    border: 1.5px solid #3a8dde44;
+    box-shadow: 0 2px 14px #3a8dde22;
+}
+.dark-theme .education-badge {
+    display: inline-block;
+    background: linear-gradient(90deg, #3a8dde 0%, #0fffc3 100%);
+    color: #181c2b;
+    border-radius: 13px;
+    font-size: 1em;
+    font-weight: 900;
+    padding: 5px 18px;
+    margin-bottom: 10px;
+    letter-spacing: 0.05em;
+    margin-right: 12px;
+    box-shadow: 0 0 10px #3a8ddeaa, 0 2px 8px #0fffc344;
+    border: 2px solid #3a8dde;
+    text-shadow: 0 2px 8px #0fffc322;
+}
+
+@keyframes edu-bg-animate {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+
+
+
+
+
+
+
+.impressive-education {
+    padding: 100px 0 60px 0;
+    position: relative;
+    overflow-x: hidden;
+    transition: background 0.5s;
+}
+
+.education-location {
+    all: unset !important;
+    display: revert !important;
+    background: unset !important;
+    border: unset !important;
+    box-shadow: unset !important;
+    color: unset !important;
+    font-size: unset !important;
+    font-family: unset !important;
+    margin: unset !important;
+    padding: unset !important;
+    gap: unset !important;
+    position: unset !important;
+    z-index: unset !important;
+    transition: unset !important;
+    left: unset !important;
+    right: unset !important;
+    top: unset !important;
+    bottom: unset !important;
+    width: unset !important;
+    height: unset !important;
+    min-width: unset !important;
+    max-width: unset !important;
+    min-height: unset !important;
+    max-height: unset !important;
+    border-radius: unset !important;
+    box-sizing: unset !important;
+    text-align: unset !important;
+    font-weight: unset !important;
+    letter-spacing: unset !important;
+    line-height: unset !important;
+    overflow: unset !important;
+    content: unset !important;
+    filter: unset !important;
+    opacity: unset !important;
+    flex-direction: unset !important;
+    flex-wrap: unset !important;
+    align-items: unset !important;
+    justify-content: unset !important;
+    grid-template-columns: unset !important;
+    animation: unset !important;
+    background-image: unset !important;
+    background-color: unset !important;
+    background-size: unset !important;
+    background-repeat: unset !important;
+    background-position: unset !important;
+    pointer-events: unset !important;
+}
+
+
 
 .highlights-container {
     max-width: 1200px;
@@ -5192,49 +5686,19 @@ sessionStorage.setItem('siteUnlocked', 'true');
     margin-top: 50px;
 }
 
-.highlight-card {
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(66, 153, 225, 0.3);
-    border-radius: 15px;
-    padding: 25px;
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    height: 100%;
-}
-
-.highlight-icon {
-    width: 50px;
-    height: 50px;
+.highlight-minimal-card {
+    background: rgba(17, 24, 39, 0.55);
+    border: 1.5px solid rgba(56, 189, 248, 0.18);
+    border-radius: 16px;
+    padding: 28px 24px 20px 24px;
+    box-shadow: 0 2px 14px 0 rgba(0,0,0,0.12);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(6, 182, 212, 0.1);
-    border-radius: 50%;
-    margin-bottom: 20px;
-}
-
-.highlight-icon i {
-    font-size: 1.5rem;
-    color: var(--accent);
-}
-
-.highlight-content h4 {
-    color: var(--text);
-    font-size: 1.3rem;
-    margin-bottom: 10px;
-    font-weight: 600;
-}
-
-.highlight-content p {
-    color: #94a3b8;
-    line-height: 1.6;
-}
-
-/* Resume Section */
-.resume-section {
-    padding: 100px 0;
-    background: transparent;
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    transition: box-shadow 0.22s, border 0.22s;
     position: relative;
     overflow: hidden;
 }
@@ -5385,7 +5849,119 @@ sessionStorage.setItem('siteUnlocked', 'true');
         max-width: 200px;
     }
 }
+
+@keyframes edu-bg-move {
+    0% { background-position: 0 0, 0 0, 0 0; }
+    100% { background-position: 120px 200px, -100px 80px, 0 0; }
+}
+.edu-neon-title {
+    color: #fff;
+    text-shadow:
+        0 0 8px #0fffc3,
+        0 0 18px #3a8dde,
+        0 0 42px #0fffc355;
+    font-family: 'Orbitron', 'Segoe UI', Arial, sans-serif;
+    font-size: 2.6rem;
+    font-weight: 900;
+    letter-spacing: 0.03em;
+    position: relative;
+    z-index: 2;
+    animation: edu-neon-flicker 2.2s infinite alternate;
+}
+@keyframes edu-neon-flicker {
+    0% { text-shadow: 0 0 8px #0fffc3, 0 0 18px #3a8dde, 0 0 42px #0fffc355; }
+    48% { text-shadow: 0 0 12px #0fffc3, 0 0 24px #3a8dde, 0 0 56px #0fffc355; }
+    50% { text-shadow: 0 0 24px #0fffc3, 0 0 36px #3a8dde, 0 0 80px #0fffc355; }
+    52% { text-shadow: 0 0 12px #0fffc3, 0 0 24px #3a8dde, 0 0 56px #0fffc355; }
+    100% { text-shadow: 0 0 8px #0fffc3, 0 0 18px #3a8dde, 0 0 42px #0fffc355; }
+}
 </style>
+<script>
+// Interactive 3D tilt for highlight cards
+(function() {
+  function isDesktop() { return window.innerWidth > 600; }
+  function handleCardMouseMove(e) {
+    const card = this;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * 7; // max 7deg
+    const rotateY = ((x - centerX) / centerX) * 7;
+    card.style.transform = `scale(1.045) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+    card.style.boxShadow = '0 12px 40px 0 rgba(56, 189, 248, 0.22), 0 2px 14px 0 rgba(0,0,0,0.19)';
+    card.style.zIndex = 2;
+  }
+  function handleCardMouseLeave() {
+    this.style.transform = '';
+    this.style.boxShadow = '';
+    this.style.zIndex = 1;
+  }
+  function attachCardInteractivity() {
+    if (!isDesktop()) return;
+    document.querySelectorAll('.highlight-minimal-card').forEach(card => {
+      card.addEventListener('mousemove', handleCardMouseMove);
+      card.addEventListener('mouseleave', handleCardMouseLeave);
+    });
+  }
+  document.addEventListener('DOMContentLoaded', attachCardInteractivity);
+  window.addEventListener('resize', function() {
+    document.querySelectorAll('.highlight-minimal-card').forEach(card => {
+      card.removeEventListener('mousemove', handleCardMouseMove);
+      card.removeEventListener('mouseleave', handleCardMouseLeave);
+      card.style.transform = '';
+      card.style.boxShadow = '';
+      card.style.zIndex = 1;
+    });
+    attachCardInteractivity();
+  });
+})();
+</script>
+<script>
+// Interactive 3D tilt for resume card
+(function() {
+  function isDesktop() { return window.innerWidth > 600; }
+  function handleResumeCardMouseMove(e) {
+    const card = this;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * 7;
+    const rotateY = ((x - centerX) / centerX) * 7;
+    card.style.transform = `scale(1.045) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+    card.style.boxShadow = '0 12px 40px 0 rgba(56, 189, 248, 0.22), 0 2px 14px 0 rgba(0,0,0,0.19)';
+    card.style.zIndex = 12;
+  }
+  function handleResumeCardMouseLeave() {
+    this.style.transform = '';
+    this.style.boxShadow = '';
+    this.style.zIndex = 10;
+  }
+  function attachResumeCardInteractivity() {
+    if (!isDesktop()) return;
+    var card = document.querySelector('.resume-minimal-card');
+    if(card) {
+      card.addEventListener('mousemove', handleResumeCardMouseMove);
+      card.addEventListener('mouseleave', handleResumeCardMouseLeave);
+    }
+  }
+  document.addEventListener('DOMContentLoaded', attachResumeCardInteractivity);
+  window.addEventListener('resize', function() {
+    var card = document.querySelector('.resume-minimal-card');
+    if(card) {
+      card.removeEventListener('mousemove', handleResumeCardMouseMove);
+      card.removeEventListener('mouseleave', handleResumeCardMouseLeave);
+      card.style.transform = '';
+      card.style.boxShadow = '';
+      card.style.zIndex = 10;
+    }
+    attachResumeCardInteractivity();
+  });
+})();
+</script>
 </body>
 </html>
         
